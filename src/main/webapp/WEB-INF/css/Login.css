@@ -1,0 +1,14 @@
+.formstyling{
+	display:flex;
+	flex-flow:column;
+	max-width: 100px;
+	align-items:center;
+	margin-left:45%
+}
+.inputstyling{
+	padding:5px;
+	margin:10px
+}
+.h2style{
+	margin-left:45%
+}
