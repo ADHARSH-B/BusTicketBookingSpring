@@ -20,4 +20,7 @@ public interface BusSeatsRepo extends JpaRepository<BusSeatsModel, Long>{
 	@Modifying
 	@Query("Update From busSeats seats SET isBooked=0,user=NULL where seats.user.id=:userId")
 	public void updateSeats(@Param("userId") Long userId);
+	
+//	@Query("Select count(*) from  busSeats seats where seats.user.id=:userId")
+//	public int getUserSeatBookedCount(@Param("userId") Long userId);
 }

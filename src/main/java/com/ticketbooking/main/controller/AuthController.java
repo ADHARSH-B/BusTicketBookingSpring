@@ -196,8 +196,11 @@ public class AuthController {
 					HttpStatus.BAD_REQUEST);
 		}
 		String token = UUID.randomUUID().toString();
-		String body ="<p>Your Password reset link is <a href='".concat( frontEnd).concat("/resetpassword?token=%s'>link</a><p>\"");
-						
+//		String body ="<p>Your Password reset link is <a href='".concat( frontEnd).concat("/resetpassword?token=%s'>link</a><p>\"");
+		System.out.println(frontEnd);
+		String body =String.format("<p>Your Password reset link is <a href='http://mybusbooking-frontend.s3-website.ap-south-1.amazonaws.com/"
+				+ "resetpassword?token=%s'>link</a><p>",token);
+		System.out.println(body);
 		emailService.sendMail(u.getEmail(), "Reset-Password-link", body);
 		u.setResetToken(token);
 		u.setResetTokenExpiry(LocalTime.now().plusMinutes(6));

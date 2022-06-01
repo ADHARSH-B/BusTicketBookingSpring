@@ -25,6 +25,7 @@ import org.springframework.web.bind.annotation.RestController;
 import com.ticketbooking.main.dao.ErrorMessage;
 import com.ticketbooking.main.dao.SuccessMessage;
 import com.ticketbooking.main.dao.AddStation;
+import com.ticketbooking.main.models.BookingsModel;
 import com.ticketbooking.main.models.BusModel;
 import com.ticketbooking.main.models.BusRouteModel;
 import com.ticketbooking.main.models.BusSeatsModel;
@@ -79,9 +80,17 @@ public class AdminController {
 
 	@DeleteMapping("/user/{id}")
 	public ResponseEntity<?> deleteUseDetails(@PathVariable("id") String Id) {
+	
+		bookingsrepo.findByUserId(Long.parseLong(Id)).forEach(bookings->{
+			BusModel bus=  busrepo.findById(bookings.getBusDetails().getId()).get();
+			bus.setSeatsAvailable(bus.getSeatsAvailable()+ bookings.getBookedSeats().size());
+			bus.setSeatsBooked(Math.abs(bus.getSeatsBooked()-bookings.getBookedSeats().size()));
+			busrepo.save(bus);
+		});
 		busseatsrepo.updateSeats(Long.parseLong(Id));
 		bookingsrepo.deleteBookingsByUserId(Long.parseLong(Id));
 		userrepo.deleteById(Long.parseLong(Id));
+	
 		return new ResponseEntity<>(new SuccessMessage("User Deletion Success", HttpStatus.OK), HttpStatus.OK);
 	}
 
